@@ -16,11 +16,54 @@
 # Image from stocksnap.io.
 
 import pandas as pd
+import numpy as np
 
 sales_data = pd.read_csv("data.csv")
 
-print(sales_data.info)
+
+def display_sales_csv():
+    print(sales_data.info)
+
+#print(sales_data.head())
+
+def shape():
+    #Identifies the number of rows and columns in the data set
+    print("Number of rows and columns = ")
+    print(sales_data.shape)
+
+def missing_values():
+    #count the number of missing values in each column
+    count_missing = sales_data.isnull().sum()
+    print(count_missing)
+
+def droprows():
+   # drop rows with missing values
+    droprows = sales_data.dropna()
+    count_missing_droprows = droprows.isnull().sum()
+    print(sales_data.shape, droprows.shape)
+    print(count_missing_droprows)
 
 
+def sortdata(header):
+    #Sort data after dropping rows
+    droprows = sales_data.dropna()
+    sorted_dropped_rows = droprows.sort_values(by=[header], ascending=True)
+    print(sorted_dropped_rows.head())
+    print(droprows.shape)
+
+def index():
+    #function to sort by index
+    droprows = sales_data.dropna()
+    index_sort = droprows.sort_index()
+    print(index_sort.head())
+    print(droprows.shape)
+
+def grouping(header):
+    #function for grouping
+    droprows = sales_data.dropna()
+    group = droprows.groupby(header)
+    print(group.head())
+
+grouping("CustomerID")
 
 
