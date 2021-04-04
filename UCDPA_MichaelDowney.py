@@ -48,8 +48,8 @@ def sortdata(header):
     #Sort data after dropping rows
     droprows = sales_data.dropna()
     sorted_dropped_rows = droprows.sort_values(by=[header], ascending=True)
-    print(sorted_dropped_rows.head())
-    print(droprows.shape)
+   # print(sorted_dropped_rows.head())
+   # print(droprows.shape)
 
 def index():
     #function to sort by index
@@ -62,8 +62,12 @@ def grouping(header):
     #function for grouping
     droprows = sales_data.dropna()
     group = droprows.groupby(header)
-    print(group.head())
 
-grouping("CustomerID")
 
+for index, contents in sales_data.iterrows():
+    sortdata("Country")
+    grouping("CustomerID")
+    print("index: {}".format(index))
+    print("{} - {} - {} - {}".format(contents["StockCode"],contents["Quantity"], contents["Country"], contents["CustomerID"]))
+    print()
 
