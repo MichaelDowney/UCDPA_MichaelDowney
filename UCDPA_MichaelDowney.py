@@ -1,4 +1,4 @@
-# source of data set: https://www.kaggle.com/carrie1/ecommerce-data
+# source of data set, data.csv: https://www.kaggle.com/carrie1/ecommerce-data
 # Context
 # Typically e-commerce datasets are proprietary and consequently hard to find among publicly available data.
 # However, The UCI Machine Learning Repository has made this dataset containing actual transactions from 2010 and 2011.
@@ -15,11 +15,15 @@
 #
 # Image from stocksnap.io.
 
+# source of data set, countrycontinent.csv: https://www.kaggle.com/statchaitya/country-to-continent?select=countryContinent.csv
+
+
+
 import pandas as pd
 import numpy as np
 
 sales_data = pd.read_csv("data.csv")
-
+continent_data = pd.read_csv("countryContinent.csv")
 
 def display_sales_csv():
     print(sales_data.info)
@@ -63,11 +67,19 @@ def grouping(header):
     droprows = sales_data.dropna()
     group = droprows.groupby(header)
 
+def Iterate():
+    #Run iterrows
+    for index, contents in sales_data.iterrows():
+        sortdata("Country")
+        grouping("CustomerID")
+        print("index: {}".format(index))
+        print("{} - {} - {} - {}".format(contents["StockCode"],contents["Quantity"], contents["Country"], contents["CustomerID"]))
+        print()
 
-for index, contents in sales_data.iterrows():
-    sortdata("Country")
-    grouping("CustomerID")
-    print("index: {}".format(index))
-    print("{} - {} - {} - {}".format(contents["StockCode"],contents["Quantity"], contents["Country"], contents["CustomerID"]))
-    print()
-
+def merge_files():
+    # Merge the two datasets
+    left = sales_data.set_index(["Country"])
+    right = continent_data.set_index(["Country"])
+    merged_data = pd.merge(left, right, on="Country")
+    print(left.shape, right.shape)
+    print(merged_data.shape)
