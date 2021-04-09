@@ -21,9 +21,22 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+
+
+
+#fig,ax = plt.subplots()
+#ax.plot((0,2),(5,5))
+#plt.show()
+
 
 sales_data = pd.read_csv("data.csv")
 continent_data = pd.read_csv("countryContinent.csv")
+
+
+#print(sales_data.info(), continent_data.info())
+
+
 
 def display_sales_csv():
     print(sales_data.info)
@@ -78,8 +91,23 @@ def Iterate():
 
 def merge_files():
     # Merge the two datasets
-    left = sales_data.set_index(["Country"])
-    right = continent_data.set_index(["Country"])
-    merged_data = pd.merge(left, right, on="Country")
+    left = sales_data
+    right = continent_data
+    merged_data = pd.merge(left, right, on="Country", how = "inner")
     print(left.shape, right.shape)
     print(merged_data.shape)
+
+filenames = ["data.csv", "countryContinent.csv"]
+dataframes = []
+for f in filenames:
+    dataframes.append(pd.read_csv(f))
+
+
+def plot():
+    #first plot using matplotlib
+    fig,ax = plt.subplots()
+    x = sales_data["InvoiceDate"].head(20)
+    y1 = sales_data["Quantity"].head(20)
+    ax.plot(x,y1)
+    plt.show()
+
