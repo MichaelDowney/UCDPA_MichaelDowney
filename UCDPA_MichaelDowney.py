@@ -21,6 +21,7 @@
 
 import pandas as pd
 import numpy as np
+from matplotlib.ticker import (FormatStrFormatter)
 import matplotlib.pyplot as plt
 
 
@@ -51,6 +52,7 @@ def totalquantity():
 
 
 def SalesTotals(group):
+    #pull top 5 sales by quantity for any group
     sum_quantity_group = sales_data.groupby(group)['Quantity'].sum()
     #sum_quantity_group = sum_quantity_group.reset_index()
     sum_quantity_group = sum_quantity_group.sort_values(ascending=False)
@@ -67,12 +69,10 @@ def SalesTotals(group):
 
    # sum_quantity_group.plot.bar()
 
-    ypos = np.arange(len(top_five))
-    plt.xticks(ypos,group)
-
-    plt.bar(ypos,'Quantity')
-
-
+    ax = top_five.plot.bar()
+    ax.set_ylabel('Quantity sold')
+    ax.set_title('Quantity sold by group')
+    ax.yaxis.set_major_formatter(lambda x, p: format(int(x), ','))
     #top_five.plot.bar()
 
     plt.show()
