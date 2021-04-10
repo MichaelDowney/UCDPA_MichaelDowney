@@ -25,6 +25,7 @@ import matplotlib.pyplot as plt
 
 
 
+
 #fig,ax = plt.subplots()
 #ax.plot((0,2),(5,5))
 #plt.show()
@@ -35,6 +36,60 @@ continent_data = pd.read_csv("countryContinent.csv")
 
 
 #print(sales_data.info(), continent_data.info())
+#print(sales_data.head())
+#print(sales_data.shape)
+#count = sales_data.isnull().sum()
+#rint(count)
+
+#type = sales_data.dtypes
+#print(type)
+
+
+def totalquantity():
+    sum_quantity = sales_data["Quantity"].sum()
+    print('{:,}'.format(sum_quantity))
+
+
+def SalesTotals(group):
+    sum_quantity_group = sales_data.groupby(group)['Quantity'].sum()
+    #sum_quantity_group = sum_quantity_group.reset_index()
+    sum_quantity_group = sum_quantity_group.sort_values(ascending=False)
+    #array = np.array(sum_quantity_group)
+    #sorted_array = np.sort(array)
+    #reverse_array = sorted_array[::-1]
+    top_five = (sum_quantity_group[0:5])
+    print(sum_quantity_group)
+
+    print(top_five)
+
+    #print(sorted_array)
+    #print(reverse_array)
+
+   # sum_quantity_group.plot.bar()
+
+    ypos = np.arange(len(top_five))
+    plt.xticks(ypos,group)
+
+    plt.bar(ypos,'Quantity')
+
+
+    #top_five.plot.bar()
+
+    plt.show()
+
+
+
+
+
+SalesTotals("Country")
+
+
+
+
+
+
+
+
 
 
 
@@ -97,10 +152,10 @@ def merge_files():
     print(left.shape, right.shape)
     print(merged_data.shape)
 
-filenames = ["data.csv", "countryContinent.csv"]
-dataframes = []
-for f in filenames:
-    dataframes.append(pd.read_csv(f))
+#filenames = ["data.csv", "countryContinent.csv"]
+#dataframes = []
+#for f in filenames:
+  #  dataframes.append(pd.read_csv(f))
 
 
 def plot():
@@ -110,4 +165,9 @@ def plot():
     y1 = sales_data["Quantity"].head(20)
     ax.plot(x,y1)
     plt.show()
+
+def highestsales():
+    #highest sales
+    start = sortdata("Description")
+    print(start)
 
