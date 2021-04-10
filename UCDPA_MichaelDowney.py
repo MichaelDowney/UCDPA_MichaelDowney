@@ -60,9 +60,9 @@ def SalesTotals(group):
     #sorted_array = np.sort(array)
     #reverse_array = sorted_array[::-1]
     top_five = (sum_quantity_group[0:5])
-    print(sum_quantity_group)
+    #print(sum_quantity_group)
 
-    print(top_five)
+    #print(top_five)
 
     #print(sorted_array)
     #print(reverse_array)
@@ -77,21 +77,29 @@ def SalesTotals(group):
 
     plt.show()
 
+def percentage_of_total(group):
+    sum_quantity_group = sales_data.groupby(group)['Quantity'].sum()
+    percent_of_total = (sum_quantity_group/ sales_data['Quantity'].sum())*100
+    percent_of_total = percent_of_total.sort_values(ascending=False)
+    array = np.array(percent_of_total)
+    sorted_array = np.sort(array, axis=None)
+    #reverse_array = sorted_array[::-1]
+   # sum = np.sum(reverse_array[5:])
+   # print(sum)
+    print(sorted_array)
+
+    #print(percent_of_total)
+
+   # ax = percent_of_total.plot.pie(autopct = '%1.1f%%', label=[])
+
+
+
+    #plt.show()
 
 
 
 
-SalesTotals("Country")
-
-
-
-
-
-
-
-
-
-
+percentage_of_total("Country")
 
 def display_sales_csv():
     print(sales_data.info)
@@ -170,4 +178,9 @@ def highestsales():
     #highest sales
     start = sortdata("Description")
     print(start)
+
+def main():
+    SalesTotals("Country")
+    SalesTotals("Description")
+
 
