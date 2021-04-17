@@ -45,62 +45,6 @@ continent_data = pd.read_csv("countryContinent.csv")
 #type = sales_data.dtypes
 #print(type)
 
-
-def totalquantity():
-    sum_quantity = sales_data["Quantity"].sum()
-    print('{:,}'.format(sum_quantity))
-
-
-def SalesTotals(group):
-    #pull top 5 sales by quantity for any group
-    sum_quantity_group = sales_data.groupby(group)['Quantity'].sum()
-    #sum_quantity_group = sum_quantity_group.reset_index()
-    sum_quantity_group = sum_quantity_group.sort_values(ascending=False)
-    #array = np.array(sum_quantity_group)
-    #sorted_array = np.sort(array)
-    #reverse_array = sorted_array[::-1]
-    top_five = (sum_quantity_group[0:5])
-    #print(sum_quantity_group)
-
-    #print(top_five)
-
-    #print(sorted_array)
-    #print(reverse_array)
-
-   # sum_quantity_group.plot.bar()
-
-    ax = top_five.plot.bar()
-    ax.set_ylabel('Quantity sold')
-    ax.set_title('Quantity sold by group')
-    ax.yaxis.set_major_formatter(lambda x, p: format(int(x), ','))
-    #top_five.plot.bar()
-
-    plt.show()
-
-def percentage_of_total(group):
-    sum_quantity_group = sales_data.groupby(group)['Quantity'].sum()
-    percent_of_total = (sum_quantity_group/ sales_data['Quantity'].sum())*100
-    percent_of_total = percent_of_total.sort_values(ascending=False)
-    array = np.array(percent_of_total)
-    sorted_array = np.sort(array, axis=None)
-    #reverse_array = sorted_array[::-1]
-   # sum = np.sum(reverse_array[5:])
-   # print(sum)
-    print(sorted_array)
-
-    #print(percent_of_total)
-
-   # ax = percent_of_total.plot.pie(autopct = '%1.1f%%', label=[])
-
-
-
-    #plt.show()
-
-
-
-
-percentage_of_total("Country")
-
 def display_sales_csv():
     print(sales_data.info)
 
@@ -166,6 +110,109 @@ def merge_files():
   #  dataframes.append(pd.read_csv(f))
 
 
+def totalquantity():
+    sum_quantity = sales_data["Quantity"].sum()
+    print('{:,}'.format(sum_quantity))
+
+
+def SalesTotals(group):
+    #pull top 5 sales by quantity for any group
+    sum_quantity_group = sales_data.groupby(group)['Quantity'].sum()
+    #sum_quantity_group = sum_quantity_group.reset_index()
+    sum_quantity_group = sum_quantity_group.sort_values(ascending=False)
+    #array = np.array(sum_quantity_group)
+    #sorted_array = np.sort(array)
+    #reverse_array = sorted_array[::-1]
+    top_five = (sum_quantity_group[0:5])
+    #print(sum_quantity_group)
+
+    #print(top_five)
+
+    #print(sorted_array)
+    #print(reverse_array)
+
+   # sum_quantity_group.plot.bar()
+
+    ax = top_five.plot.bar()
+    ax.set_ylabel('Quantity sold')
+    ax.set_title('Quantity sold by group')
+    ax.yaxis.set_major_formatter(lambda x, p: format(int(x), ','))
+    #top_five.plot.bar()
+
+    plt.show()
+
+def percentage_of_totalUK():
+    data = sales_data.loc[sales_data['Country'] != 'United Kingdom']
+    sum_quantity_group = data.groupby('Country')['Quantity'].sum()
+    percent_of_total = (sum_quantity_group / sales_data['Quantity'].sum()) * 100
+
+    ax = percent_of_total.plot.pie(autopct = '%1.1f%%', startangle=0)
+    ax.set_title('Percentage of total sales by Country outside UK')
+    plt.show()
+
+def SalesTotalsNotUK():
+    #pull top 5 sales by quantity outside UK
+    data = sales_data.loc[sales_data['Country'] != 'United Kingdom']
+    sum_quantity_group = data.groupby('Country')['Quantity'].sum()
+    sum_quantity_group = sum_quantity_group.sort_values(ascending=False)
+    top_five = (sum_quantity_group[0:5])
+
+    ax = top_five.plot.bar()
+    ax.set_ylabel('Quantity sold')
+    ax.set_title('Top five sales outside UK')
+    ax.yaxis.set_major_formatter(lambda x, p: format(int(x), ','))
+
+    plt.show()
+
+def percentage_of_total(group):
+    sum_quantity_group = sales_data.groupby(group)['Quantity'].sum()
+    percent_of_total = (sum_quantity_group/ sales_data['Quantity'].sum())*100
+    #percent_of_total.sort_values(ascending=False)
+    #array = np.array(percent_of_total)
+    #sorted_array = np.sort(array, axis=None)
+    #reverse_array = sorted_array[::-1]
+   # sum = np.sum(reverse_array[5:])
+   # print(sum)
+   #print(sorted_array)
+
+    #print(percent_of_total)
+
+
+
+
+    ax = percent_of_total.plot.pie(startangle=0)
+    ax.set_title('Percentage of total sales by Country')
+    plt.show()
+
+def Histogram():
+    plt.hist(sales_data["CustomerID"])
+    #sales_data["Quantity"].plot(kind="hist", bins=50)
+    plt.show()
+
+
+def scatter(group):
+    data = sales_data.loc[sales_data['Country'] == group]
+    price = data["UnitPrice"]
+    quantity = data["Quantity"]
+
+    plt.scatter(price, quantity, edgecolor='black', linewidth=1, alpha=0.75)
+    xmin,xmax = plt.xlim()
+    ymin,ymax = plt.ylim()
+    plt.xlim(xmin * 0, xmax *.1)
+    plt.ylim(ymin * 0,ymax * .2)
+    #plt.xscale('log')
+    #plt.yscale('log')
+
+    plt.title('Relationship between price and Quantity sold in ' + group)
+    plt.xlabel('Price')
+    plt.ylabel('Quantity')
+
+
+    plt.tight_layout()
+    plt.show()
+
+
+
 def plot():
     #first plot using matplotlib
     fig,ax = plt.subplots()
@@ -180,7 +227,12 @@ def highestsales():
     print(start)
 
 def main():
-    SalesTotals("Country")
     SalesTotals("Description")
+    percentage_of_total("Country")
+    SalesTotalsNotUK()
+    scatter('Netherlands')
+
+main()
+
 
 
