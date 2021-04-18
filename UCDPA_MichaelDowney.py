@@ -18,7 +18,7 @@
 # source of data set, countrycontinent.csv: https://www.kaggle.com/statchaitya/country-to-continent?select=countryContinent.csv
 
 
-
+#Import a CSV file into a Pandas DataFrame
 import pandas as pd
 import numpy as np
 from matplotlib.ticker import (FormatStrFormatter)
@@ -35,15 +35,15 @@ import matplotlib.pyplot as plt
 sales_data = pd.read_csv("data.csv")
 continent_data = pd.read_csv("countryContinent.csv")
 
+def datacheck():
 
-#print(sales_data.info(), continent_data.info())
-#print(sales_data.head())
-#print(sales_data.shape)
-#count = sales_data.isnull().sum()
-#rint(count)
-
-#type = sales_data.dtypes
-#print(type)
+    print(sales_data.info(), continent_data.info())
+    print(sales_data.head())
+    print(sales_data.shape)
+    count = sales_data.isnull().sum()
+    print(count)
+    type = sales_data.dtypes
+    print(type)
 
 def display_sales_csv():
     print(sales_data.info)
@@ -211,7 +211,22 @@ def scatter(group):
     plt.tight_layout()
     plt.show()
 
+def nump():
+    #Use of numpy
+    sum_quantity_group = sales_data.groupby("Country")['Quantity'].sum()
+    array = np.array(sum_quantity_group)
+    sorted_array = np.sort(array)
+    reverse_array = sorted_array[::-1]
+    print(reverse_array)
 
+def list():
+    sales_data_list = sales_data[["Country", "Quantity"]]
+    print(sales_data_list.head)
+
+def concat():
+    concat_data = pd.concat([sales_data, continent_data], axis =1)
+    print(concat_data.shape)
+    print(concat_data.head)
 
 def plot():
     #first plot using matplotlib
@@ -227,12 +242,28 @@ def highestsales():
     print(start)
 
 def main():
+
+    #view data
+    datacheck()
+    #Remove null values
+    droprows()
+    #Demonstrate use of iterrows
+    #Iterate()
+    #Use of numpy
+    nump()
+    #example of converting panda data frame to short list
+    list()
+    #joining the data on concatenate
+    concat()
+    #View sales total bar chart
     SalesTotals("Description")
+    #percentage of total pie chart
     percentage_of_total("Country")
+    #Exclude sales in the UK from total
     SalesTotalsNotUK()
+    #Relationship between price and quantity sold scatter chart - can be used for any Country in the data set
     scatter('Netherlands')
 
+
+
 main()
-
-
-
